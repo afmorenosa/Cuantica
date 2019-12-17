@@ -1,5 +1,5 @@
-#include <cmath>
-#include <vector>
+#ifndef complex_h
+#def complex_h
 
 class complex{
 
@@ -7,7 +7,7 @@ class complex{
 
   complex();
   
-  complex(int a,int b);
+  complex(double a, double b, bool polar=false);
 
   void SetImg(double b);
 
@@ -19,33 +19,33 @@ class complex{
   
   void SetC(double a, double b, bool polar=false);
 
-  complex operator+(complex other);
+  complex operator+(complex &other);
 
-  complex operator-(complex other);
+  complex operator-(complex &other);
 
-  complex operator*(complex other);
+  complex operator*(complex &other);
 
-  complex operator/(complex other);
+  complex operator/(complex &other);
 
-  complex operator==(complex other);
+  complex operator==(complex &other);
 
-  complex operator<(complex other);
+  complex operator<(complex &other);
 
-  complex operator>(complex other);
+  complex operator>(complex &other);
 
-  complex operator!=(complex other);
+  complex operator!=(complex &other);
 
-  complex operator+=(complex other);
+  complex operator+=(complex &other);
 
-  complex operator-=(complex other);
+  complex operator-=(complex &other);
 
-  complex operator*=(complex other);
+  complex operator*=(complex &other);
 
-  complex operator/=(complex other);
+  complex operator/=(complex &other);
 
-  complex operator<<(complex other);
+  complex operator<<(complex &other);
 
-  complex operator>>(complex other);
+  complex operator>>(complex &other);
 
   double GetRe(void);
 
@@ -55,6 +55,14 @@ class complex{
 
   double GetArg(void);
 
+  double CalRe(void);
+
+  double CalImg(void);
+
+  double CalMod(void);
+
+  double CalArg(void);
+
   bool GetPolar(void);
   
  private:
@@ -63,7 +71,7 @@ class complex{
 
   std::vector<double> zp(2);
 
-  bool polar=false;
+  bool Polar=false;
   
 };
 
@@ -80,3 +88,5 @@ bool polar(complex z);
 complex Conj(complex z);
 
 complex Pow(complex z);
+
+#endif
