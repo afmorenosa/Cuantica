@@ -1,15 +1,16 @@
 #include "../lib/complex.h"
 #include <cmath>
 #include <vector>
+#include <ostream>
 #include <cstdlib>
 #include <iostream>
 
-#define Pi std::acos(-1)
+#define Pi (double)std::acos(-1)
 
 complex::complex(){
 }
 
-complex::complex(double a, double b, bool polar=false){
+complex::complex(double a, double b, bool polar){
   if(!(polar)){
     this->SetRe(a);
     this->SetImg(b);
@@ -41,16 +42,16 @@ void complex::SetMod(double r){
 }
 
 void complex::SetArg(double t){
-  bool md;
-  if(md%2==0){
-    t=t%Pi;
+  bool md=((int)(t/Pi)%2==0);
+  if(md){
+    t=std::fmod(t,Pi);
   }else{
-    t=t%Pi-Pi;
+    t=std::fmod(t,Pi)-Pi;
   }
-  z[1]=t;
+  zp[1]=t;
 }
 
-void complex::SetZ(double a, double b, bool polar=false){
+void complex::SetZ(double a, double b, bool polar){
   if(!(polar)){
     z[0]=a;
     z[1]=b;
@@ -89,7 +90,7 @@ complex complex::Scalar_Product(double Scl){
   if(this->GetPol()){
     zPol=true;
   }
-  complex z=complex(this->GetRe()*Scl,this->GetImg()Scl);
+  complex z=complex(this->GetRe()*Scl,this->GetImg()*Scl);
   z.SetPol(zPol);
   return z;
 }
@@ -151,45 +152,6 @@ complex complex::operator/=(complex &other){
   return *this;
 }
 
-std::ostream& complex::operator<<(std::ostream &out, const complex &c){
-  if(!(c.GetPol())){
-    out<<c.GetRe()<<"+"<<GetImg()<<"i\n";
-  }else{
-    out<<c.GetMod()<<"exp["<<GetArg()<<"i]\n";
-  }
-  return out;
-}
-
-std::istream& complex::operator>>(std::istream &in, complex &c){
-  bool p=false;
-  while true{
-      int b=(int)"n";
-      char a;
-      std::cout<<"Polar form? [y/n]: ";
-      std::cin>>a;
-      b=(int)a;
-      if(b==(int)"n" || b==(int)"N"){
-        std::cout<<"Real part: ";
-        in>>c.z[0];
-        std::cout<<"Imaginary part: ";
-        in>>c.z[1];
-        zp[0]=c.CalMod();
-        zp[1]=c.CalArg();
-        return in;
-      }else if(b==(int)"y" || b==(int)"Y"){
-        std::cout<<"Module: ";
-        in>>c.zp[0];
-        std::cout<<"Argument: ";
-        in>>c.zp[1];
-        zp[0]=c.CalMod();
-        zp[1]=c.CalArg();
-        return in;               
-      }else{
-        stc::cout<<"introduce a valid key\n";
-      }
-    }     
-}
-
 void complex::Conjugate(void){
   if(!(this->GetPol())){
     this->z[1]=-this->z[1];
@@ -198,23 +160,23 @@ void complex::Conjugate(void){
   }
 }
 
-double complex::GetRe(void){
+double complex::GetRe(void) const{
   return z[0];
 }
 
-double complex::GetImg(void){
+double complex::GetImg(void) const{
   return z[1];
 }
 
-double complex::GetMod(void){
+double complex::GetMod(void) const{
   return zp[0];
 }
 
-double complex::GetArg(void){
+double complex::GetArg(void) const{
   return zp[1];
 }
 
-double complex::CalRe(void);{
+double complex::CalRe(void){
   return zp[0]*std::cos(zp[1]);
 }
 
@@ -255,12 +217,54 @@ double complex::CalArg(void){
   }
 }
 
-bool complex::GetPol(void){
+bool complex::GetPol(void) const{
   return this->Polar;
 }
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
+
+std::ostream& operator<<(std::ostream &out, const complex &c){
+  if(!(c.GetPol())){
+    out<<c.GetRe()<<" + "<<c.GetImg()<<"i\n";
+  }else{
+    out<<c.GetMod()<<" * exp["<<c.GetArg()<<"i]\n";
+  }
+  return out;
+}
+
+std::istream& operator>>(std::istream &in, complex &c){
+  bool p=false;
+  while(true){
+      int b=0;
+      char a;
+      std::cout<<"Polar form? [y/n]: ";
+      std::cin>>a;
+      b=(int)a;
+      if(b==110 || b==78){
+        std::cout<<"Real part: ";
+        in>>c.z[0];
+        std::cout<<"Imaginary part: ";
+        in>>c.z[1];
+        c.zp[0]=c.CalMod();
+        c.zp[1]=c.CalArg();
+        c.Polar=p;
+        return in;
+      }else if(b==121 || b==89){
+        std::cout<<"Module: ";
+        in>>c.zp[0];
+        std::cout<<"Argument: ";
+        in>>c.zp[1];
+        c.SetArg(c.zp[1]);
+        c.z[0]=c.CalRe();
+        c.z[1]=c.CalImg();
+        c.Polar=! p;
+        return in;               
+      }else{
+        std::cout<<"introduce a valid key\n";
+      }
+    }     
+}
 
 double Mod(complex z){
   return z.GetMod();
@@ -284,11 +288,12 @@ bool polar(complex z){
 }
 
 complex Conj(complex z){
-  return z.Conjugate();
+  z.Conjugate();
+  return z;
 }
 
 complex Pow(complex z, double n){
-  complex w= complex(std::pow(z.GetMod(),n),n*z.GetArg(),polar=true);
+  complex w= complex(std::pow(z.GetMod(),n),n*z.GetArg(),true);
   if(!(z.GetPol())){
     w.SetPol(false);
     return w;

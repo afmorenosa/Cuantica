@@ -1,5 +1,7 @@
 #ifndef complex_h
-#def complex_h
+#define complex_h
+#include <vector>
+#include <ostream>
 
 class complex{
 
@@ -43,19 +45,15 @@ class complex{
 
   complex operator/=(complex &other);
 
-  std::ostream& operator<<(std::ostream &out, const complex &c);
+  void Conjugate(void);
 
-  std::istream& operator>>(std::istream &in, complex &c);
+  double GetRe(void) const;
 
-  void Conjugate();
+  double GetImg(void) const;
 
-  double GetRe(void);
+  double GetMod(void) const;
 
-  double GetImg(void);
-
-  double GetMod(void);
-
-  double GetArg(void);
+  double GetArg(void) const;
 
   double CalRe(void);
 
@@ -65,17 +63,19 @@ class complex{
 
   double CalArg(void);
 
-  bool GetPol(void);
-  
- private:
+  bool GetPol(void) const;
 
-  std::vector<double> z(2);
+  std::vector<double> z=std::vector<double>(2);
 
-  std::vector<double> zp(2);
+  std::vector<double> zp=std::vector<double>(2);
 
   bool Polar=false;
   
 };
+
+std::ostream& operator<<(std::ostream &out, const complex &c);
+
+std::istream& operator>>(std::istream &in, complex &c);
 
 double Mod(complex z);
 
