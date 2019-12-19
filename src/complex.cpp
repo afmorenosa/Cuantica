@@ -65,7 +65,7 @@ void complex::SetZ(double a, double b, bool polar){
   }
 }
 
-complex complex::operator+(complex &other){
+complex complex::operator+(const complex &other){
   bool zPol=false;
   if(this->GetPol() && this->GetPol()){
     zPol=true;
@@ -75,7 +75,7 @@ complex complex::operator+(complex &other){
   return z;
 }
 
-complex complex::operator-(complex &other){
+complex complex::operator-(const complex &other){
   bool zPol=false;
   if(this->GetPol() && this->GetPol()){
     zPol=true;
@@ -95,7 +95,7 @@ complex complex::Scalar_Product(double Scl){
   return z;
 }
 
-complex complex::operator*(complex &other){
+complex complex::operator*(const complex &other){
   bool zPol=false;
   if(this->GetPol() && this->GetPol()){
     zPol=true;
@@ -105,18 +105,18 @@ complex complex::operator*(complex &other){
   return z;
 }
 
-complex complex::operator/(complex &other){
+complex complex::operator/(const complex &other){
   bool zPol=false;
   if(this->GetPol() && this->GetPol()){
     zPol=true;
   }
   complex z=complex(this->GetRe()* other.GetRe()+this->GetImg()* other.GetImg(),-this->GetRe()* other.GetImg()+this->GetImg()* other.GetRe());
-z= z.Scalar_Product(1/other.GetMod());
+  z= z.Scalar_Product(1/(other.GetMod()*other.GetMod()));
   z.SetPol(zPol);
   return z;
 }
 
-bool complex::operator==(complex &other){
+bool complex::operator==(const complex &other){
   if(this->GetRe()==other.GetRe() && this->GetImg()==other.GetImg()){
     return true;
   }else{
@@ -124,7 +124,7 @@ bool complex::operator==(complex &other){
   }
 }
 
-bool complex::operator!=(complex &other){
+bool complex::operator!=(const complex &other){
   if(this->GetRe()!=other.GetRe() || this->GetImg()!=other.GetImg()){
     return true;
   }else{
@@ -132,22 +132,22 @@ bool complex::operator!=(complex &other){
   }
 }
 
-complex complex::operator+=(complex &other){
+complex complex::operator+=(const complex &other){
   *this=*this+other;
   return *this;
 }
 
-complex complex::operator-=(complex &other){
+complex complex::operator-=(const complex &other){
   *this=*this-other;
   return *this;
 }
 
-complex complex::operator*=(complex &other){
+complex complex::operator*=(const complex &other){
   *this=*this*other;
   return *this;
 }
 
-complex complex::operator/=(complex &other){
+complex complex::operator/=(const complex &other){
   *this=*this/other;
   return *this;
 }
@@ -185,7 +185,7 @@ double complex::CalImg(void){
 }
 
 double complex::CalMod(void){
-  return std::pow(zp[0]*zp[0]+zp[1]*zp[1],0.5);
+  return std::pow(z[0]*z[0]+z[1]*z[1],0.5);
 }
 
 double complex::CalArg(void){
@@ -302,3 +302,148 @@ complex Pow(complex z, double n){
     return w;
   }  
 }
+
+complex Sin(complex z){
+  complex w= complex(std::sin(z.GetRe())*std::cosh(z.GetImg()),std::cos(z.GetRe())*std::sinh(z.GetImg()));
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Cos(complex z){
+  complex w= complex(std::cos(z.GetRe())*std::cosh(z.GetImg()),-std::sin(z.GetRe())*std::sinh(z.GetImg()));
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Tan(complex z){
+  complex w= Sin(z)/Cos(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }
+}
+
+complex Csc(complex z){
+  complex w= complex(1,0)/Sin(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Sec(complex z){
+  complex w= complex(1,0)/Cos(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Cot(complex z){
+  complex w= complex(1,0)/Tan(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }
+}
+
+complex Sinh(complex z){
+  complex w= complex(std::sinh(z.GetRe())*std::cos(z.GetImg()),std::cosh(z.GetRe())*std::sin(z.GetImg()));
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Cosh(complex z){
+  complex w= complex(std::cosh(z.GetRe())*std::cos(z.GetImg()),std::sinh(z.GetRe())*std::sin(z.GetImg()));
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Tanh(complex z){
+  complex w= Sinh(z)/Cosh(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }
+}
+
+complex Csch(complex z){
+  complex w= complex(1,0)/Sinh(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Sech(complex z){
+  complex w= complex(1,0)/Cosh(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }  
+}
+
+complex Coth(complex z){
+  complex w= complex(1,0)/Tanh(z);
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }
+}
+
+complex Exp(complex z){
+  complex w= complex(std::exp(z.GetRe())*std::cos(z.GetImg()),std::exp(z.GetRe())*std::sin(z.GetImg()));
+  if(!(z.GetPol())){
+    w.SetPol(false);
+    return w;
+  }else{
+    w.SetPol(true);
+    return w;
+  }
+  }
+
+

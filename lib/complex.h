@@ -23,27 +23,27 @@ class complex{
   
   void SetZ(double a, double b, bool polar=false);
 
-  complex operator+(complex &other);
+  complex operator+(const complex &other);
 
-  complex operator-(complex &other);
+  complex operator-(const complex &other);
 
   complex Scalar_Product(double Scl);
 
-  complex operator*(complex &other);
+  complex operator*(const complex &other);
 
-  complex operator/(complex &other);
+  complex operator/(const complex &other);
   
-  bool operator==(complex &other);
+  bool operator==(const complex &other);
 
-  bool operator!=(complex &other);
+  bool operator!=(const complex &other);
 
-  complex operator+=(complex &other);
+  complex operator+=(const complex &other);
 
-  complex operator-=(complex &other);
+  complex operator-=(const complex &other);
 
-  complex operator*=(complex &other);
+  complex operator*=(const complex &other);
 
-  complex operator/=(complex &other);
+  complex operator/=(const complex &other);
 
   void Conjugate(void);
 
@@ -90,5 +90,31 @@ bool polar(complex z);
 complex Conj(complex z);
 
 complex Pow(complex z);
+
+complex Sin(complex z);
+
+complex Cos(complex z);
+
+complex Tan(complex z);
+
+complex Csc(complex z);
+
+complex Sec(complex z);
+
+complex Cot(complex z);
+
+complex Sinh(complex z);
+
+complex Cosh(complex z);
+
+complex Tanh(complex z);
+
+complex Csch(complex z);
+
+complex Sech(complex z);
+
+complex Coth(complex z);
+
+complex Exp(complex z);
 
 #endif
