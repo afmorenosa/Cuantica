@@ -444,6 +444,6 @@ complex Exp(complex z){
     w.SetPol(true);
     return w;
   }
-  }
+}
 
 
