@@ -3,6 +3,8 @@
 #include <vector>
 #include <ostream>
 
+using fun=complex(complex)
+
 class complex{
 
  public:
@@ -115,6 +117,12 @@ complex Sech(complex z);
 
 complex Coth(complex z);
 
-complex Exp(complex z);
+complex Log(complex z);
+
+complex PartX(fun f, complex z);
+
+complex PartY(fun f, complex z);
+
+complex Derivate(fun f, complex z);
 
 #endif
