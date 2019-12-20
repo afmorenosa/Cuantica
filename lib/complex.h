@@ -3,8 +3,6 @@
 #include <vector>
 #include <ostream>
 
-using fun=complex(complex)
-
 class complex{
 
  public:
@@ -75,6 +73,8 @@ class complex{
   
 };
 
+using fun=complex(complex);
+
 std::ostream& operator<<(std::ostream &out, const complex &c);
 
 std::istream& operator>>(std::istream &in, complex &c);
@@ -116,6 +116,8 @@ complex Csch(complex z);
 complex Sech(complex z);
 
 complex Coth(complex z);
+
+complex Exp(complex z);
 
 complex Log(complex z);
 

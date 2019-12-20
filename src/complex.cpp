@@ -7,7 +7,7 @@
 
 #define Pi (double)std::acos(-1)
 
-using fun=complex(complex)
+using fun=complex(complex);
 
 complex::complex(){
 }
@@ -119,7 +119,7 @@ complex complex::operator/(const complex &other){
 }
 
 bool complex::operator==(const complex &other){
-  if(this->GetRe()==other.GetRe() && this->GetImg()==other.GetImg()){
+  if(std::abs(this->GetRe()-other.GetRe())<=2e-16 && std::abs(this->GetImg()-other.GetImg())<=2e-16){
     return true;
   }else{
     return false;
@@ -461,43 +461,43 @@ complex Log(complex z){
 
 complex PartX(fun f, complex z){
   complex z1, z2, w1, w2, res;
-  double h=1e-9;
+  double h=1e-15;
   z1=z;
   z2=z;
   z1.SetRe(z.GetRe()+h/2);
   z2.SetRe(z.GetRe()-h/2);
-  w1=(f(z1)-f(z2))/h;
+  w1=(f(z1)-f(z2)).Scalar_Product(1/h);
   h/=2;
   z1=z;
   z2=z;
   z1.SetRe(z.GetRe()+h/2);
   z2.SetRe(z.GetRe()-h/2);
-  w2=(f(z1)-f(z2))/h;
-  res=(w1.Scalar_Product(4)-w2).Scalar_Product(1/3);
+  w2=(f(z1)-f(z2)).Scalar_Product(1/h);
+  res=(w1.Scalar_Product(4)-w2).Scalar_Product((double)1/3);
   return res;
 }
 
 complex PartY(fun f, complex z){
   complex z1, z2, w1, w2, res;
-  double h=1e-9;
+  double h=1e-15;
   z1=z;
   z2=z;
   z1.SetImg(z.GetImg()+h/2);
   z2.SetImg(z.GetImg()-h/2);
-  w1=(f(z1)-f(z2))/h;
+  w1=(f(z1)-f(z2)).Scalar_Product(1/h);
   h/=2;
   z1=z;
   z2=z;
   z1.SetImg(z.GetImg()+h/2);
   z2.SetImg(z.GetImg()-h/2);
-  w2=(f(z1)-f(z2))/h;
-  res=(w1.Scalar_Product(4)-w2).Scalar_Product(1/3);
+  w2=(f(z1)-f(z2)).Scalar_Product(1/h);
+  res=(w1.Scalar_Product(4)-w2).Scalar_Product((double)1/3);
   return res*complex(0,-1);
 }
 
 complex Derivate(fun f, complex z){
   if(PartX(f,z)==PartY(f,z)){
-    return PartX(f,x);
+    return PartX(f,z);
   }else{
     std::cout<<"Error: The Function is not derivable\n";
     std::exit(1);
