@@ -73,7 +73,6 @@ class complex{
   
 };
 
-using fun=complex(complex);
 
 std::ostream& operator<<(std::ostream &out, const complex &c);
 
@@ -121,10 +120,13 @@ complex Exp(complex z);
 
 complex Log(complex z);
 
+template <typename fun>
 complex PartX(fun f, complex z);
 
+template <typename fun>
 complex PartY(fun f, complex z);
 
+template <typename fun>
 complex Derivate(fun f, complex z);
 
 #endif
